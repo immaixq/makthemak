@@ -12,7 +12,7 @@ export default function about() {
                 <p>
                     I am curious to learn deeper about machine learning, technologies and how
                     they can combine to make our world a better place.
-                    <span className="ext-amber-300"> It would make my day if you find anything interesting here. </span>
+                    <span className="text-amber-300"> It would make my day if you find anything interesting here. </span>
                 </p>
                 <p className="my-6">
                     I also find great joy in the process of making things. Whether it is developing a new feature for an application or building this website from scratch,<span className="text-amber-300">there is something incredibly satisfying about seeing an idea come to life through code.</span>

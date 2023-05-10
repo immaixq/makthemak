@@ -23,7 +23,7 @@ export default async function Post({params}: { params: { slug: string}}) {
           <div className="font-bold text-3xl font-serif">
             <h1>{post.title}</h1>
           </div>
-          <div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm max-w-[720px]">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm ">
             <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
               {post.publishedAt}
             </div>

@@ -26,15 +26,17 @@ export default function RootLayout({
   return (
     <html lang="en"
     className={clsx(
-      "text-neutral-800 bg-neutral-100 dark:text-slate-300 dark:bg-[#111010]",
+      "text-neutral-700 bg-neutral-100 dark:text-slate-400 dark:bg-[#111010]",
       roboto.variable
     )}
     >
-      <body className="max-w-4xl md:flex-row lg:mt-28 lg:mx-auto">
-        <Nav/>
-        <main className="container min-w-0 mt-20">
-          {children}
-        </main>
+      <body className="max-w-4xl mt-16 lg:mx-auto">
+        <section className='layout'>
+          <Nav/>
+          <main className="mt-12">
+            {children}
+          </main>
+        </section>
       </body>
     </html>
   )

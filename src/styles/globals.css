@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.container {
+/* .container {
   margin-left: auto;
   margin-right: auto;
   width: 100%;
-  max-width: 750px;
+  max-width: 820px;
   padding-left: 18px;
   padding-right: 18px;
+} */
+
+.layout {
+  max-width: 68.75rem; 
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
