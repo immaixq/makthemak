@@ -3,8 +3,8 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/components/Icons/icons'
-// import React from "react";
-// import { useState } from "react";
+import { LayoutGroup, motion } from 'framer-motion';
+
 
 const navItems = {
   '/': {
@@ -23,8 +23,6 @@ const navItems = {
 
 const Header = () => {
   let pathname = usePathname() || '/';
-  // const [isOpen, setIsOpen] = useState(false);
-  // const genericHamburgerLine = `h-1 w-7 my-1 rounded-full bg-white transition ease transform duration-300`;
   return (
     <div className="font-serif font-bold ">
       <div className="flex-wrap md:flex justify-between">
@@ -33,6 +31,7 @@ const Header = () => {
             <Logo/>
           </a>
         </div>
+        <LayoutGroup>
         <div className="items-center">
           {Object.entries(navItems).map(([path, { name }]) => {
               const isActive = path === pathname;
@@ -48,38 +47,25 @@ const Header = () => {
                         },
                       )}
                     >
+                    <span className="relative py-[5px] px-[10px]">
                       {name}
+                      {path === pathname ? (
+                        <motion.div
+                          className="absolute inset-0 bg-neutral-100 dark:bg-neutral-800 rounded-md z-[-1]"
+                          layoutId="sidebar"
+                          transition={{
+                            type: 'spring',
+                            stiffness: 350,
+                            damping: 30,
+                          }}
+                        />
+                      ) : null}
+                    </span>
                     </Link>
               );
             })}
           </div>
-          {/* <div className=' md:hidden flex item-center'>
-            <button
-      className="mobile-menu-btn flex flex-col h-7 w-10  rounded justify-center items-center group"
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      <div
-        className={`${genericHamburgerLine} ${
-          isOpen
-            ? "rotate-45 translate-y-3 opacity-50 group-hover:opacity-100"
-            : "opacity-50 group-hover:opacity-100"
-        }`}
-      />
-      <div
-        className={`${genericHamburgerLine} ${
-          isOpen ? "opacity-0" : "opacity-50 group-hover:opacity-100"
-        }`}
-      />
-      <div
-        className={`${genericHamburgerLine} ${
-          isOpen
-            ? "-rotate-45 -translate-y-3 opacity-50 group-hover:opacity-100"
-            : "opacity-50 group-hover:opacity-100"
-        }`}
-      />
-    </button>
-
-            </div> */}
+          </LayoutGroup>
       </div>
     </div>
   )
