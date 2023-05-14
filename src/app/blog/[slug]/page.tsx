@@ -42,7 +42,7 @@ export default async function Post({params}: { params: { slug: string}}) {
             <div className="col-span-4">
               <Mdx code={post.body.code} />
             </div>
-            <div className="font-serif">
+            <div className="hidden lg:block font-serif">
               <h1 className=" font-bold dark:text-amber-400	text-blue-700	">Table of Contents</h1>
               <ul className=" mt-4 space-y-5 text-xs">
                 <li key="content-1" className="line-clamp-2 hover:text-accent">
