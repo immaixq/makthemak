@@ -24,6 +24,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    
     <html lang="en"
     className={clsx(
       "text-neutral-700 bg-neutral-100 dark:text-slate-400 dark:bg-[#111010]",
@@ -33,9 +34,9 @@ export default function RootLayout({
       <body className="max-w-4xl mt-16 lg:mx-auto">
         <section className='layout'>
           <Nav/>
-          <main className="mt-12">
-            {children}
-          </main>
+            <main className="mt-12">
+              {children}
+            </main>
         </section>
       </body>
     </html>
