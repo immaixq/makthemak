@@ -1,19 +1,30 @@
-import Image from 'next/image'
+"use client"
 import { avatar, about } from '@/lib/info';
+import { motion } from 'framer-motion';
+
+const variants = {
+  initial: { opacity: 0, y: 50, clipPath: 'inset(100% 0 0 0)' },
+  animate: {
+    opacity: 1,
+    y: 0,
+    clipPath: 'inset(0 0 0 0)',
+    transition: {
+      type: 'spring',
+      duration: 0.5}
+  },
+};
 
 export default function Home() {
   return (
+    <motion.div
+    initial="initial"
+    animate="animate"
+    variants={variants}
+  >
     <section className='mx-auto'>
       <div className='flex'>
       <h1 className='font-bold text-6xl font-serif'>Welcome to MaktheMak&apos;s!</h1>
-      {/* <div className="pr-12">
-          <Image
-            alt="mak"
-            className="rounded-md shadow-md border "
-            src={avatar}
-            width={180}
-            />
-        </div> */}
+
         </div>
       <div>
         <p className='my-10 max-w-[640px] text-neutral-700 dark:text-neutral-200'>
@@ -39,5 +50,6 @@ export default function Home() {
           </div> */}
         </div>
     </section>
+    </motion.div>
   )
 }
