@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     template: '%s | MaktheMak',
   },
 }
-
+  
 export default function RootLayout({
   children,
 }: {
@@ -27,7 +27,7 @@ export default function RootLayout({
     
     <html lang="en"
     className={clsx(
-      "text-neutral-700 bg-neutral-100 dark:text-slate-400 dark:bg-[#111010]",
+      "text-neutral-700 bg-slate-100 dark:text-slate-400 dark:bg-[#111010]",
       roboto.variable
     )}
     >
