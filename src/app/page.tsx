@@ -41,14 +41,29 @@ export default function Home() {
               </div>
             </div>
           </div>
-          {/* <div>
-            <h1 className="mb-5 pr-5 text-lg font-semibold">Hear more from me</h1>
-            <div className="flex">
-              <input className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg rounded-r-none block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" type="email" name="email" id="email" placeholder="Type your email"/>
-              <button type="submit" className="text-white rounded-l-none  bg-slate-700 hover:bg-blue-800  focus:outline-none font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600">Submit</button>
-            </div>
-          </div> */}
         </div>
+
+  <div className="mt-8 relative flex overflow-x-hidden font-bold font-serif border-y-4">
+    <div className="py-12 animate-marquee whitespace-nowrap">
+      <span className="text-4xl mx-4">Data Science</span>
+      <span className="text-4xl mx-4">✨</span>
+      <span className="text-4xl mx-4">Web3</span>
+      <span className="text-4xl mx-4">✨</span>
+      <span className="text-4xl mx-4">AI</span>
+      <span className="text-4xl mx-4">✨</span>
+    </div>
+
+    <div className="absolute top-0 py-12 animate-marquee2 whitespace-nowrap">
+      <span className="text-4xl mx-4">Data Science</span>
+      <span className="text-4xl mx-4">✨</span>
+      <span className="text-4xl mx-4">Web3</span>
+      <span className="text-4xl mx-4">✨</span>
+      <span className="text-4xl mx-4">AI</span>
+      <span className="text-4xl mx-4">✨</span>
+    </div>
+  </div>
+
+        
     </section>
     </motion.div>
   )
