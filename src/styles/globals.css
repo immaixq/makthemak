@@ -18,3 +18,43 @@
   margin-right: auto;
 }
 
+h1 {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 1em;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 0.8em;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 50px 0;
+}
+
+.heading {
+  text-align: center;
+}
+
+.paragraph {
+  margin-top: 20px;
+}
+
+.marquee {
+  border: 2px solid rgb(255, 255, 255);
+}
