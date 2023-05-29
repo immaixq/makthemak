@@ -1,4 +1,8 @@
 
+export const metadata = {
+    title: 'About',
+    description: 'data scientist at work'
+}
 export default function about() {
     return (
         <section>
