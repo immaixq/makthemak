@@ -13,7 +13,8 @@ export default function about() {
                     This space helps me to document and share
                     some of the things I learned or thoughts I have. 
                 </p>
-                <p>
+                <hr />
+                <p className="my-6">
                     I am curious to learn deeper about machine learning, technologies and how
                     they can combine to make our world a better place.
                     <span className="dark:text-amber-400 text-blue-700"> It would make my day if you find anything interesting here. </span>
