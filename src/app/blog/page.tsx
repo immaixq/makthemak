@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { allBlogs } from 'contentlayer/generated';
 
+export const metadata = {
+  title: 'Blog',
+  description: 'Writing me thoughts down in progess..'
+}
 export default async function BlogPage() {
 
     return (
@@ -39,3 +43,5 @@ export default async function BlogPage() {
       </section>
     );
   }
+
+

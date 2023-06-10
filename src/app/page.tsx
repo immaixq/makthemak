@@ -1,29 +1,29 @@
 "use client"
-import { avatar, about } from '@/lib/info';
+import { about } from '@/lib/info';
 import { motion } from 'framer-motion';
 
-const variants = {
-  initial: { opacity: 0, y: 50, clipPath: 'inset(100% 0 0 0)' },
-  animate: {
-    opacity: 1,
-    y: 0,
-    clipPath: 'inset(0 0 0 0)',
-    transition: {
-      type: 'spring',
-      duration: 0.5}
-  },
-};
+// const variants = {
+//   initial: { opacity: 0, y: 50, clipPath: 'inset(10% 0 0 0)' },
+//   animate: {
+//     opacity: 1,
+//     y: 0,
+//     clipPath: 'inset(0 0 0 0)',
+//     transition: {
+//       type: 'spring',
+//       duration: 0.5}
+//   },
+// };
 
 export default function Home() {
   return (
     <motion.div
     initial="initial"
     animate="animate"
-    variants={variants}
+    // variants={variants}
   >
     <section className='mx-auto'>
       <div className='flex'>
-      <h1 className='font-bold text-6xl font-serif'>Welcome to MaktheMak&apos;s!</h1>
+      <h1 className='font-bold text-5xl md:text-7xl font-serif'>Welcome to MaktheMak&apos;s!</h1>
 
         </div>
       <div>
