@@ -26,6 +26,7 @@ export default async function BlogPage() {
                 <div className="mb-4 w-full flex flex-col">
                     <h1 className="font-bold dark:text-amber-400	text-blue-700">{post.title}</h1>
                     <p>{post.summary}</p>
+                    {/* <ViewCounter slug={post.slug} trackView={false} /> */}
                 </div>
                 <div className="flex flex-inline tracking-tighter">
                 {post.tags?.map((tag,i) => {
