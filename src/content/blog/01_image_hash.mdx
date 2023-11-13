@@ -1,0 +1,121 @@
+---
+title: 'Hashing Algorithm'
+publishedAt: '2023-10-10'
+summary: 'Exploring common image hashing algorithms such as average hash, perceptual hash 
+        and wavelet hash which can be used for similar image detection.'
+tags: 
+    - computer vision 
+---
+
+Removing duplicated data is a crucial preprocessing step for model training. In computer vision, image hashing is a valuable tool for 
+image similarity detection which helps to identify images that should be removed.
+
+### What's Image Hashing
+> Image hashing function is a process of transforming input data to a string with a fixed length.
+
+The image hash generated from the hashing function is like a digital fingerprint of an image, which confirms the image's identity.
+
+There are a variety of hashing functions such as average hash, perceptual hash, difference hash, 
+Haar wavelet hash, and HSV color hash. Different hashing algorithm arises to tackle different use cases.
+Let's dive deeper into the two of these hashing algorithms (average and perceptual hashing) and see how the 
+underlying mechanism works! 
+
+### Average Hashing (aHash)
+Average hashing is known to be the simpliest hashing algorithm as it takes fewer transformation in its
+computation of the resulting hash. The steps in average hashing are:
+
+1. Reduce Image Size - Downsampling & Reduce Color
+
+First, the image size is reduced to 8x8 pixels and the image is converted into grayscale. This removes image details which increases the 
+speed of image processing. The 8x8 pixels give a 64 bit hash which is a compact representation of the image.
+
+2. Setting pixel values to bits - By Comparision with Average Pixel values
+
+If the pixel value is greater than the average, hash value is set to 1, otherwise, it will be 0.
+
+```python
+from PIL import Image
+
+# average hashing
+image = Image.open("avatar.png")
+
+# 1. convert image to grayscale
+gray_image = image.convert("L")
+
+# 2. resize image to 8x8
+resized_gray = gray_image.resize((8,8))
+
+# convert to pil image object to array
+pixels = np.asarray(resized_gray)
+
+# get average pixel value
+avg_px = np.mean(pixels)
+
+#  get bits: if pixel > avg_px = 1, else 0
+bits = pixels > avg_px
+
+# flatten bits and convert to bit string
+bit_string = ''.join(str(bit) for bit in 1*bits.flatten())
+
+# convert to hexadecimal 
+hexadecimal_hash = hex(int(bit_string, 2))[2:]  # remove the "0x" prefix
+
+```
+
+3. Convert bit string into hexadecimal equivalent hash
+
+A little side track to examine the counting of hexadecimal equivalent of the 
+binary number. 
+
+#### Hexadecimal Numeral System
+
+The hexadecimal numeral system is a base-16  system that uses 16 symbols to represent numbers.
+Instead of using 10 symbols 0-9 to represent numbers in the decimal system we commonly
+use, hexadecimal uses `0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, D` to represent 
+values from 0 to 15.
+
+Considering the bit string:
+
+ `0000001000110010011110001011100010111000001110000000100000000001`
+
+It will be grouped into sets of four since each hexadecimal digit corresponds to 
+four binary digits.
+
+`0000 0010 0011 0010 0111 1000 1011 1000 1011 1000 0011 1000 0000 0100 0000 0001`
+
+The values of the bits are shown as follows:
+![Image Alt Text](/bits.svg)
+
+Next, combine the hexadecimal digits obtained from each group to form the final hexadecimal number:
+
+`023278B8B838041`
+
+The image hash remains the same for a scaled image. Also, changes in brightness, contrast and colors
+will not change the hash value significantly. And that's it for average hashing! 
+
+### Perceptual Hashing (pHash)
+
+Perceptual hash function is locality sensitive. That means, similar data points are likely to be mapped 
+to the same or nearby hash buckets. Rather than calculating the mean value of the 64 pixels in average
+hashing, perceptual hashing uses the mean discrete cosine transformation (DCT) value. 
+
+#### What is Discrete Cosine Transformation (DCT)?
+
+One common application for DCT is for image compression which helps to reduce high frequency signals, e.g in JPEG compression. 
+The compression starts by splitting the image into 8x8 pixel groups, where each group is encoded with DCT.
+In DCT, pixel values of an image are approximated by the sum of many cosine waves at different frequencies.
+
+The steps to perceptual hashing are: 
+
+1. Reduce Image Size - Downsampling & Reduce Color
+
+This step is mainly to simplify the DCT computation.
+
+2. Calculate & Reduce DCT
+
+This step uses DCT to reduce high frequencies signals of the image while preserving the gists of the original image.
+
+3. Set hash bits to 0 or 1 by comparing if DCT value is greater or smaller than the average
+
+
+
