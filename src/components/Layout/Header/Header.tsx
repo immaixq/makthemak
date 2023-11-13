@@ -27,7 +27,7 @@ const Header = () => {
     <div className="text-sm md:text-base font-serif font-bold ">
       <div className="flex-wrap md:flex justify-between">
         <div className='mb-2'>
-          <a>
+          <a href='/'>
             <Logo/>
           </a>
         </div>
