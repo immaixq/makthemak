@@ -7,7 +7,7 @@ const ProjectPage = () => {
       {
         title: "Project 1",
         description: "This is a description of Project 1.",
-        image: "https://images.unsplash.com/photo-1616091238212-aca6808e3cf0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHByb2plY3QlMjBwYWdlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
+        // image: "https://images.unsplash.com/photo-1616091238212-aca6808e3cf0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHByb2plY3QlMjBwYWdlfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
         id: 0
       }]);
 
@@ -23,9 +23,9 @@ const ProjectPage = () => {
                   transition={{ duration: 0.5 }}
                 >
                 <h2>{project.title}</h2>
-                  <a href={project.image}>
+                  {/* <a href={project.image}>
                     <img src={project.image} alt={project.title} />
-                  </a>
+                  </a> */}
                   <p>{project.description}</p>
                 </motion.div>
               </li>
