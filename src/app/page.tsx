@@ -44,7 +44,7 @@ export default function Home() {
         </div>
 
   <div className="mt-8 relative flex overflow-x-hidden font-bold font-serif border-y-4">
-    <div className="py-12 animate-marquee whitespace-nowrap">
+    <div className="py-10 animate-marquee whitespace-nowrap">
       <span className="text-4xl mx-4">Data Science</span>
       <span className="text-4xl mx-4">✨</span>
       <span className="text-4xl mx-4">Web3</span>
@@ -53,7 +53,7 @@ export default function Home() {
       <span className="text-4xl mx-4">✨</span>
     </div>
 
-    <div className="absolute top-0 py-12 animate-marquee2 whitespace-nowrap">
+    <div className="absolute top-0 py-10 animate-marquee2 whitespace-nowrap">
       <span className="text-4xl mx-4">Data Science</span>
       <span className="text-4xl mx-4">✨</span>
       <span className="text-4xl mx-4">Web3</span>
