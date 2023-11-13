@@ -9,9 +9,9 @@ export default function about() {
             <div> 
                 <h1 className="font-bold text-5xl font-serif">About Me</h1>
                 <p className="my-6">
-                    Hey there, fellow data explorers! 🚀 I'm Mai, your friendly neighborhood data scientist  based in the vibrant city of Singapore. 
-                    Think of this blog as my magical diary where I spill the beans on all the nerdy spells I've mastered and the whimsical thoughts that pop into my head.
-                    Whether it's deciphering data mysteries or having an existential crisis over a missing semicolon, this space is where I pour out my heart and code.
+                    Hey there, fellow data explorers! 🚀 I&apos;m Mai, your friendly neighborhood data scientist based in the vibrant city of Singapore. 
+                    Think of this blog as my magical diary where I spill the beans on all the nerdy spells I&apos;ve mastered and the whimsical thoughts that pop into my head.
+                    Whether it&apos;s deciphering data mysteries or having an existential crisis over a missing semicolon, this space is where I pour out my heart and code.
                     Expect a delightful blend of tech wisdom, quirky anecdotes, and the occasional data-driven dad joke.
                 </p>
                 <hr />
