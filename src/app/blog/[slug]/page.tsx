@@ -39,8 +39,8 @@ export default async function Post({params}: { params: { slug: string}}) {
               })}
             </div>
           </div>
-          <div className="grid grid-flow-col gap-6">
-            <div className="col-span-1">
+          <div className="">
+            <div className="">
               <Mdx code={post.body.code} />
             </div>
           </div>
