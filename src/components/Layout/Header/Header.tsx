@@ -24,15 +24,15 @@ const navItems = {
 const Header = () => {
   let pathname = usePathname() || '/';
   return (
-    <div className="text-sm md:text-base font-serif font-bold ">
-      <div className="flex-wrap md:flex justify-between">
+    <div className="font-serif font-bold ">
+      <div className="flex-wrap md:flex justify-between ">
         <div className='mb-2'>
           <a href='/'>
             <Logo/>
           </a>
         </div>
         <LayoutGroup>
-        <div className="items-center">
+        <div className="hidden items-center space-x-3 lg:flex">
           {Object.entries(navItems).map(([path, { name }]) => {
               const isActive = path === pathname;
               return (
