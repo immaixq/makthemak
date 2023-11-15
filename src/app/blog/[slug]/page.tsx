@@ -20,7 +20,7 @@ export default async function Post({params}: { params: { slug: string}}) {
 
   return (
     <section>
-        <div>
+        <div className="">
           <div className="font-bold text-3xl font-serif">
             <h2>{post.title}</h2>
           </div>

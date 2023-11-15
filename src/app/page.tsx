@@ -23,7 +23,7 @@ export default function Home() {
   >
     <section className='mx-auto'>
       <div className='flex'>
-      <h1 className='font-bold text-5xl md:text-7xl font-serif'>Welcome to MaktheMak&apos;s!</h1>
+      <h1 className='font-bold text-4xl md:text-5xl font-serif'>Welcome to MaktheMak&apos;s!</h1>
 
         </div>
       <div>
