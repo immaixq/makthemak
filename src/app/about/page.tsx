@@ -7,8 +7,8 @@ export default function about() {
     return (
         <section>
             <div> 
-                <h1 className="font-bold text-5xl font-serif">About Me</h1>
-                <p className="my-6">
+                <h1 className="font-bold text-3xl md:text-5xl font-serif">About Me</h1>
+                <p className="my-6 text-sm md:text-base">
                     Hey there, fellow data explorers! 🚀 I&apos;m Mai, your friendly neighborhood data scientist based in the vibrant city of Singapore. 
                     Think of this blog as my magical diary where I spill the beans on all the nerdy spells I&apos;ve mastered and the whimsical thoughts that pop into my head.
                     Whether it&apos;s deciphering data mysteries or having an existential crisis over a missing semicolon, this space is where I pour out my heart and code.

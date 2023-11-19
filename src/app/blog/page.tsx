@@ -9,7 +9,7 @@ export default async function BlogPage() {
 
     return (
       <section>
-        <h1 className="font-bold text-5xl font-serif mb-8">Blog</h1>
+        <h1 className="font-bold text-5xl font-serif mb-6">Blog</h1>
         {allBlogs
           .sort((a, b) => {
             if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
@@ -23,9 +23,9 @@ export default async function BlogPage() {
               className="flex flex-col space-y-1 mb-6"
               href={`/blog/${post.slug}`}
               >
-                <div className="mb-6 w-full flex flex-col">
-                    <h1 className="mb-6 font-bold dark:text-amber-400 text-blue-700 ">{post.title}</h1>
-                    <p>{post.summary}</p>
+                <div className="mb-4 w-full flex flex-col">
+                    <h1 className="mb-4 text-base md:text-lg font-bold dark:text-amber-400 text-blue-700 ">{post.title}</h1>
+                    <p className='text-sm md:text-base'>{post.summary}</p>
                     {/* <ViewCounter slug={post.slug} trackView={false} /> */}
                 </div>
                 <div className="flex flex-inline tracking-tighter">
