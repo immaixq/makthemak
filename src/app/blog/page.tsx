@@ -9,7 +9,7 @@ export default async function BlogPage() {
 
     return (
       <section>
-        <h1 className="font-bold text-5xl font-serif mb-6">Blog</h1>
+        <h1 className="font-bold text-3xl md:text-5xl font-serif mb-6">Blog</h1>
         {allBlogs
           .sort((a, b) => {
             if (new Date(a.publishedAt) > new Date(b.publishedAt)) {
