@@ -3,7 +3,7 @@ import { about } from '@/lib/info';
 import { motion } from 'framer-motion';
 
 // const variants = {
-//   initial: { opacity: 0, y: 50, clipPath: 'inset(10% 0 0 0)' },
+//   initial: { opacity: 0, y: 50, clipPath: 'inset(10% 0 0 0)' },s
 //   animate: {
 //     opacity: 1,
 //     y: 0,
@@ -24,7 +24,6 @@ export default function Home() {
     <section className='mx-auto'>
       <div className='flex'>
       <h1 className='font-bold md:text-5xl font-serif'>Hello, I&apos;m Mai 👋</h1>
-
         </div>
       <div>
         <p className='text-sm md:text-base my-10 max-w-[640px] text-neutral-700 dark:text-neutral-200'>

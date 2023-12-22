@@ -32,7 +32,7 @@ export default function RootLayout({
       roboto.variable
     )}
     >
-      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto">
+      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
         <section className='layout'>
           <Nav/>
             <main className="mt-12">
