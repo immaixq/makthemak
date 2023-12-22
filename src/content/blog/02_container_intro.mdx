@@ -1,0 +1,73 @@
+---
+title: 'Deep dive into container technology'
+publishedAt: '2023-12-12'
+summary: 'Container technology is widely used in different industries for efficiency and scalability in development. In this post, we will explore what it is and how to get started with it.'
+tags: 
+    - devops
+---
+
+In the fast-paced realm of modern software development, staying nimble is key. 
+Enter container technology—a game-changer that streamlines the process of deploying and running applications. 
+Picture bundling up an app and all its necessities into a neat, standardized package that effortlessly moves from one computing environment to another. 
+That's the magic of containers. 
+In this brief journey, we'll uncover the basics of container tech, exploring why it's a must-have tool for developers and IT pros.
+
+## Why containeraisation 
+
+You might find this situation familiar at some point of development lifecycle.. 
+
+> But it runs on my computer! 
+
+Here is containeraisation to the rescue. Containeraisation helps to relieve the pain of setting up dependencies and packages when someone else wants to run an application another developer builds. 
+This ensures portability, allowing application to run consistently across different environment. It also allows for scalability as containers are light
+weight as compared to a virtual machine.
+
+## Docker 🐳 
+Docker is a gateway to container technology. It is both a commonly used platform to build, deploy and manage containeraised applications and 
+a tool to work with container image and containers. In the subsequent examples about containers and images, I will be using Docker to illustrate the code
+snippets.
+
+## Building blocks of container
+The two major ingredients to get container running are container image and container runtimes. 
+
+### Container image
+Container image is a snapshot to record of how the software should behave and pack all necessary building ingredients to execute the container. 
+Images are labelled in name and tag which are distributed by container registry. In Docker, the container image is defined using a Dockerfile.
+A Dockerfile is a text configuration file that contains a set of instructions for building the image. Here is a simple example of a Dockerfile:
+
+```python
+# Pull a Pytorch image as the base image from Pytorch
+FROM pytorch/pytorch:latest
+
+# Set working directory in container
+WORKDIR /app
+
+# Copy requirements file into container to /app folder
+COPY requirements.txt /app/
+
+# Install any dependencies specified in requirements
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Command to run your application
+CMD ["python", "your_ml_script.py"]
+
+```
+
+Similar to the construction of a burger, the container image is built with layers. As each modification to the Dockerfile is saved as one layer, 
+containers with similar base image can reuse the shared layers, thus keeping containers light weighted.
+
+Elaborating further about the layers of the Dockerfile, the first layer installs the base image of the container. This sets up the initial operating system
+of the container, acting as a starting point with default filesystem and programs which can be used to customise the image further.  
+
+### Building the container
+To start building the container, simply execute the `docker build` command and Docker will executes the instructions specified in the 
+Dockerfile. During the creation of the layers, the layers are cached for efficiency so that changes to the container made subsequently can be directed to 
+targeted layers only.
+
+## Container technology in a nutshell
+In summary, think of container as planning for a picnic. 
+Picture a picnic basket meticulously packed with all your desired essentials—delicious food, a cozy mat, and perhaps a couple of bottles of wine to elevate the experience. 
+Now, imagine your friend expressing interest in having the exact kind of fantastic picnic you just enjoyed. 
+Here's the magic: you can effortlessly hand over your picnic basket, ensuring your friend's picnic runs as seamlessly and joyfully as yours did.
+This simple, hassle-free sharing is akin to the essence of container technology in the world of computing.
+
