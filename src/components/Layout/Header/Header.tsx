@@ -17,9 +17,9 @@ const navItems = {
   '/blog': {
     name: 'Blog',
   },
-  '/project': {
-    name: 'Project',
-  },
+  // '/project': {
+  //   name: 'Project',
+  // },
 };
 
 const Header = () => {
