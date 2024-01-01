@@ -14,9 +14,12 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: {
-    default: 'MaktheMak',
-    template: '%s | MaktheMak',
+    default: 'Mak',
+    template: '%s | Mak',
   },
+  icons: {
+    icon: '/avatar.png'
+  }
 }
   
 export default function RootLayout({
@@ -32,7 +35,7 @@ export default function RootLayout({
       roboto.variable
     )}
     >
-      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
+        <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
         <section className='layout'>
           <Nav/>
             <main className="mt-12">
