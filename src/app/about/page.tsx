@@ -9,14 +9,13 @@ export default function about() {
             <div> 
                 <h1 className="font-bold text-3xl md:text-5xl font-serif">About Me</h1>
                 <p className="my-6 text-sm md:text-base">
-                    Hello data explorers! 🚀 I&apos;m Mai, a data scientist from Singapore.
+                    Hello! 🚀 I&apos;m Mai, a data scientist from Singapore.
                     Consider this blog my enchanted diary, where I share nerdy spells, whimsical thoughts, and tales of deciphering data mysteries. 
                     Join me for a blend of tech wisdom and quirky anecdotes.
                 </p>
                 <hr />
                 <p className="my-6">
-                    I am curious to learn deeper about machine learning, technologies and how
-                    they can combine to make our world a better place.
+                    A cup of good coffee makes my day. Perhaps our paths will cross at a random coffee spot one day. Anyways,  
                     <span className="dark:text-amber-400 text-blue-700"> It would make my day if you find anything interesting here. </span>
                 </p>
                 {/* <p className="my-6">
