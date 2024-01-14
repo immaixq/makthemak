@@ -14,9 +14,9 @@ export default function about() {
                     Join me for a blend of tech wisdom and quirky anecdotes.
                 </p>
                 <hr />
-                <p className="my-6">
+                <p className="my-6 text-sm md:text-base">
                     A cup of good coffee makes my day. Perhaps our paths will cross at a random coffee spot one day. Anyways,  
-                    <span className="dark:text-amber-400 text-blue-700"> It would make my day if you find anything interesting here. </span>
+                    <span className="dark:text-amber-400 text-blue-700"> it would make my day if you find anything interesting here. </span>
                 </p>
                 {/* <p className="my-6">
                     I also find great joy in the process of making things. Whether it is developing a new feature for an application or building this website from scratch, <span className="dark:text-amber-400 text-blue-700">there is something incredibly satisfying about seeing an idea come to life through code.</span>
