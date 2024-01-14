@@ -20,11 +20,12 @@ export default async function BlogPage() {
           .map((post) => (
             <Link
               key={post.slug}
-              className="flex flex-col space-y-1 mb-6"
+              className="flex flex-col space-y-1 mb-10"
               href={`/blog/${post.slug}`}
               >
                 <div className="mb-4 w-full flex flex-col">
-                    <h1 className="mb-4 text-base md:text-lg font-bold dark:text-amber-400 text-blue-700 ">{post.title}</h1>
+                  <p className='text-xs font-mono mb-2'>{post.publishedAt}</p>
+                    <h1 className="mb-3 text-base md:text-lg font-bold dark:text-amber-400 text-blue-700 ">{post.title}</h1>
                     <p className='text-sm md:text-base'>{post.summary}</p>
                     {/* <ViewCounter slug={post.slug} trackView={false} /> */}
                 </div>
