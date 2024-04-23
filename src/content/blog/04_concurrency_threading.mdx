@@ -20,7 +20,7 @@ Consider a web server handling multiple client requests, the server can switch b
 handling the next one. In this case, while the server is tackling one request at a time, it seems like all the requests are being processed
 simultaneously.
 
-The advantage of resource sharing can be illustrated with a producer process and a consumer procress. The writer process is responsible for generating
+Concurrency allows for system resource sharing such as memory and declared variable in the code. The advantage of resource sharing can be illustrated with a producer process and a consumer procress. The writer process is responsible for generating
 data while the consumer process processes the generated data. Instead of having the generated data to be sent over a network connection, the generated data 
 can be stored in the shared memory region which reduces the overhead of file I/O or network communication. 
 
