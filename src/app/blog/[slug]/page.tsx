@@ -12,33 +12,34 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function Post({params}: { params: { slug: string}}) {
+
+export default async function Post({ params }: { params: { slug: string } }) {
   const post = allBlogs.find((post) => post.slug == params.slug)
   if (!post) {
     notFound();
   }
 
   return (
-    <section className="max-w-3xl mx-auto p-4">
-        <div>
-          <div className="font-bold text-3xl font-serif">
-            <h2>{post.title}</h2>
+    <section>
+      <div>
+        <div className="font-bold text-3xl font-serif">
+          <h2>{post.title}</h2>
+        </div>
+        <div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm ">
+          <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
+            {post.publishedAt}
           </div>
-          <div className="grid grid-cols-[auto_1fr_auto] items-center mt-4 mb-8 font-mono text-sm ">
-            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
-              {post.publishedAt}
-            </div>
-            <div className="ml-5 flex flex-inline tracking-tighter">
-            <Tags tags={post.tags || []} />
-          </div>
-          </div>
-          <div className="">
-            <div className="">
-              <Mdx code={post.body.code} />
-            </div>
+          <div className="ml-5 flex flex-inline tracking-tighter">
+            <Tags tags={post.tags || []} /> {/* Use the Tags component */}
           </div>
         </div>
-        <Footer/>
+        <div className="">
+          <div className="">
+            <Mdx code={post.body.code} />
+          </div>
+        </div>
+      </div>
+      <Footer />
     </section>
   )
 }
