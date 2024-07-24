@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Mdx } from "@/components/MDXComponents/mdx";
 import Footer from '@/components/Layout/Footer/Footer'
+import Tags from "@/components/Tags";
 
 export async function generateStaticParams() {
   return allBlogs.map((post) => ({
@@ -11,7 +12,6 @@ export async function generateStaticParams() {
   }));
 }
 
-
 export default async function Post({params}: { params: { slug: string}}) {
   const post = allBlogs.find((post) => post.slug == params.slug)
   if (!post) {
@@ -19,7 +19,7 @@ export default async function Post({params}: { params: { slug: string}}) {
   }
 
   return (
-    <section>
+    <section className="max-w-3xl mx-auto p-4">
         <div>
           <div className="font-bold text-3xl font-serif">
             <h2>{post.title}</h2>
@@ -29,15 +29,8 @@ export default async function Post({params}: { params: { slug: string}}) {
               {post.publishedAt}
             </div>
             <div className="ml-5 flex flex-inline tracking-tighter">
-              {post.tags?.map((tag,i) => {
-                const label = tag
-                return (
-                  <div key={i}>
-                    <div className='text-xs ml-4 border-solid border-2 border-sky-500 rounded-md px-2 py-1 tracking-tighter'>{label}</div>
-                  </div>
-                )
-              })}
-            </div>
+            <Tags tags={post.tags || []} />
+          </div>
           </div>
           <div className="">
             <div className="">
