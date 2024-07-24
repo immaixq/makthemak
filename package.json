@@ -22,10 +22,12 @@
     "class-variance-authority": "^0.4.0",
     "clsx": "^1.2.1",
     "contentlayer": "^0.3.2",
+    "dotenv": "^16.0.3",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
     "framer-motion": "^10.12.10",
-    "next": "^13.2.5-canary.16",
+    "mongoose": "6.11.1",
+    "next": "^14.0.4",
     "next-auth": "^4.19.0",
     "next-contentlayer": "^0.3.2",
     "react": "^18.2.0",
@@ -35,7 +37,8 @@
     "rehype-shiki": "^0.0.9",
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
-    "shiki": "^0.14.1"
+    "shiki": "^0.14.1",
+    "swr": "^2.1.5"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.9",
