@@ -11,7 +11,7 @@ const Tags: React.FC<TagsProps> = ({ tags }) => {
       {tags.map((tag, index) => (
         <span 
           key={index} 
-          className="inline-block rounded-full px-3 py-1 text-sm font-semibold border-solid border-2 border-sky-500 mr-2 mb-2"
+          className="mr-2 mb-2 text-xs border-solid border-2 border-sky-500 rounded-md px-2 py-1"
         >
           {tag}
         </span>
