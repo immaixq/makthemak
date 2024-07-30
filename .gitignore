@@ -40,3 +40,10 @@ next-env.d.ts
 
 # local env files
 .env*.local
+
+# content layer
+*.contentlayer/
+
+# json file
+*.json
+

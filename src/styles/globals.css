@@ -76,5 +76,15 @@ a {
 }
 
 .scribbly-underline.active {
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="2" viewBox="0 0 100 2"><path d="M0,1 Q10,0 20,1 T40,1 T60,1 T80,1 T100,1" stroke="blue" fill="transparent" stroke-width="2"/></svg>') repeat-x; /* Scribbly line */
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="4" viewBox="0 0 100 4"><path d="M0,2 C20,-1 30,5 50,2 C70,-1 80,5 100,2" stroke="blue" fill="transparent" stroke-width="2"/></svg>') repeat-x;
+  background-position: 0 100%;
+  background-size: auto 4px;
+  padding-bottom: 4px;
+}
+
+/* styles.css or your CSS module */
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+  .hide-on-mobile {
+      display: none; /* Hides the element */
+  }
 }

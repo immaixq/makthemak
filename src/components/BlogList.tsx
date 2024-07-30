@@ -48,19 +48,19 @@ const BlogList: React.FC<BlogListProps> = ({ blogs }) => {
 
     return (
         <div className="flex">
-            <div className="w-5/6">
+            <div className="">
                 <input
                     type="text"
                     placeholder="Search blogs..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full p-2 mb-4 border-transparent rounded bg-transparent border-b-gray-300 text-gray-700 focus:outline-none hide-on-mobile" // Added the class here
+                    className="w-full p-2 mb-4 border-transparent rounded bg-transparent border-b-gray-300 text-gray-700 focus:outline-none hide-on-mobile"
                 />
                 {searchTerm && (
                     <div className="mb-4">
                         <button
                             onClick={() => setSelectedTag(null)}
-                            className={`mr-2 mb-2 px-3 py-1 relative transition-colors duration-300 ${!selectedTag ? 'text-white' : 'bg-transparent'}`}
+                            className={`text-xs font-mono mr-2 mb-2 px-3 py-1 relative transition-colors duration-300 ${!selectedTag ? 'text-white' : 'bg-transparent'}`}
                         >
                             All
                             <span className={`scribbly-underline ${!selectedTag ? 'active' : ''}`}></span>
@@ -69,7 +69,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs }) => {
                             <button
                                 key={tag}
                                 onClick={() => setSelectedTag(tag)}
-                                className={`text-sm font-mono mr-2 mb-2 px-3 py-1 relative transition-colors duration-300 ${selectedTag === tag ? 'text-white' : 'bg-transparent'}`}
+                                className={`text-xs font-mono mr-2 mb-2 px-3 py-1 relative transition-colors duration-300 ${selectedTag === tag ? 'text-white' : 'bg-transparent'}`}
                             >
                                 {tag}
                                 <span className={`scribbly-underline ${selectedTag === tag ? 'active' : ''}`}></span>
