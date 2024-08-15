@@ -34,6 +34,7 @@ module.exports = {
       },
       fontFamily: {
         default: ['var(--font-roboto)'],
+        'merriweather': ['Merriweather', 'sans-serif'],
       }
     },
   },
