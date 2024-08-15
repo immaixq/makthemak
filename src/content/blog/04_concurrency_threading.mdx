@@ -1,6 +1,7 @@
 ---
 title: 'Concurrency VS Parallelism '
 publishedAt: '2024-03-01'
+revisedAt: '2024-08-15'
 summary: 'Understanding the concept of concurrency and parallelism'
 tags: 
     - computer programming 
@@ -24,22 +25,59 @@ Concurrency allows for system resource sharing such as memory and declared varia
 data while the consumer process processes the generated data. Instead of having the generated data to be sent over a network connection, the generated data 
 can be stored in the shared memory region which reduces the overhead of file I/O or network communication. 
 
-#### Threading 
-Threading is a technique that enables for concurrency. A thread is the minimum sequence of instructions that can be managed independely by a scheduler.
-By creating multiple threads, a program perform multiple tasks concurrently. 
-Threads share the same memory space and resources within a process, enabling a better inter-process communication which reduces the overall consumption of
-resources. 
+#### Compatible Time-Sharing System 
+Tracing back to the enablement of concurrency leads us to time-sharing systems, which were a significant breakthrough in the evolution of modern computing. 
+Before the 1960s, when programs came from stacks of punch cards, computers only ran one job at a time in a batch processing model.
 
-####  Asynchronous Programming 
-Asynchronous programming is a way to achieve concurrency without relying on threading. In asynchronous programming, tasks are not performed in a sequential way.
-Asynchronous allows the program to continue to process other tasks while waiting for the original task to be completed. This can be achieved using callbacks, promises, or async/await. 
+In this earlier system, programs were pooled with other jobs in batches to be read by a card reader and stored on magnetic tapes. 
+The batch of programs on the tape would then be fed into the computer for processing. 
+It was incredibly time-consuming to run the programs, as programmers had to get back in the queue and wait for the next iteration of the batch.
+
+This inefficiency led to the creation of compatible time-sharing systems developed by Fernando Corbató and his team at MIT in the 1960s. 
+Time-sharing allowed multiple users to interact with the computer simultaneously, drastically improving resource utilization and reducing idle time. 
+By enabling rapid context switching between jobs, time-sharing systems made it possible for users to run their programs without having to wait for long periods.
+
+Time-sharing systems were a significant milestone in enabling concurrency, as they introduced the concept of multiple users interacting with the computer at the same time. 
+This paved the way for the development of modern operating systems that support multitasking and parallel processing.
+
+#### Processes 
+> Process: An instance of a program running in a computer
+
+Each process operates in its memory space with a dedicated set of resources such as memory space.
+Processes are independent of each other such that they do not interfere with each other. 
+
+#### Threading 
+> Thread: The smallest unit of sequential execution within a process
+
+Threading is a powerful technique that enables concurrency in computer systems. 
+A thread is the smallest unit of execution that can be managed independently by a scheduler. 
+It consists of a sequence of instructions that can run concurrently with other threads.
+By creating multiple threads within a program, it becomes possible to perform multiple tasks concurrently. 
+This allows for more efficient utilization of system resources and can significantly improve the overall performance and responsiveness of an application.
+
+The switching between threads, known as context switching, is a crucial mechanism that enables concurrent execution. 
+It is the reason why you can play music while simultaneously writing code in a code editor. 
+The operating system rapidly switches between the threads responsible for each task, giving the illusion of simultaneous execution.
+Threads share the same memory space and resources within a process, which enables efficient inter-thread communication. 
+This shared environment reduces the overhead associated with inter-process communication (IPC) and leads to a more efficient use of system resources overall.
 
 ### Parallelism 
 Parallelism is the ability to execute multiple tasks simultaneously using multiple processing units such as CPU or GPU cores. 
 
 > Parallelism: The act of dividing tasks into multiple subtasks that can be executed in parallel at the same time, on discrete threads and cores of a CPU or GPU.
 
-#### Things That Can't Do Asynchronous
-While running in parallel improves runtime performance, it is important to note that many algorithm cannot be split into subtasks to execute on a pool of cores. 
-This is because these algorithms require state maintanence to function properly. Managing shared state is a challenge in concurrency and parallel programming as multiple threads or processes 
-may access and modify shared state simultaneously. This leads to race conditions, deadlocks or inconsistent result. 
+If concurrency is the idea of having a pair of hands for multitasking, for instance a chef having to prepare a meal who will be switching between 
+tasks like cutting vegetables, swirling the soup and frying some eggs, then parallelism could be thought of as having multiple chefs, each responsible for carrying 
+out the task independently at the same time. 
+
+I find clarity in differentiating between the concept of parallelism and concurrency by focusing on their purposes and mechanism. 
+The goal of parallelism is to reduce throughput, that is the measure of data transmission within a given period of time. On the otherhand, 
+the purpose of concurrency is to decrease response time, therefore allowing for a better user interaction with the programs. 
+
+By leveraging parallelism, developers can significantly reduce throughput, enhancing the overall efficiency of data processing and computation. 
+Conversely, employing concurrency techniques can lead to improved response times, creating a smoother and more interactive user experience.
+
+### Brdiging to Broader Concepts
+Understanding concurrency and parallelism prepares us to explore other related topics such as asynchronous/synchronous programming, thread management
+and the challenges of shared resources. There are many more details to be unfold and we shall unwrap these interconnected topics in another article.
+
