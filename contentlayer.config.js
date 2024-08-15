@@ -26,6 +26,9 @@ export const Blog = defineDocumentType(() => ({
             type: 'string',
             required: true
         },
+        revisedAt: {
+            type: 'string'
+        },
         summary: {
             type: 'string',
             required: true

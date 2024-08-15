@@ -21,26 +21,26 @@ export const metadata: Metadata = {
     icon: '/avatar.png'
   }
 }
-  
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    
+
     <html lang="en"
-    className={clsx(
-      "text-neutral-700 bg-slate-100 dark:text-slate-400 dark:bg-[#111010]",
-      roboto.variable
-    )}
+      className={clsx(
+        "text-neutral-700 bg-slate-100 dark:text-slate-400 dark:bg-[#111010]",
+        roboto.variable
+      )}
     >
-        <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
+      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
         <section className='layout'>
-          <Nav/>
-            <main className="mt-12">
-              {children}
-            </main>
+          <Nav />
+          <main className="mt-12">
+            {children}
+          </main>
         </section>
       </body>
     </html>
