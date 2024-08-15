@@ -30,8 +30,13 @@ export default async function Post({ params }: { params: { slug: string } }) {
             {post.publishedAt}
           </div>
           <div className="ml-5 flex flex-inline tracking-tighter">
-            <Tags tags={post.tags || []} /> {/* Use the Tags component */}
+            <Tags tags={post.tags || []} /> 
           </div>
+          {post.revisedAt && (
+            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
+              Revised on: {post.revisedAt}
+            </div>
+          )}
         </div>
         <div className="">
           <div className="">
