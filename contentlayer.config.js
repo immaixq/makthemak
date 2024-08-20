@@ -36,6 +36,10 @@ export const Blog = defineDocumentType(() => ({
         tags: {
             type: 'list',
             of: {type: 'string'}
+        },
+        likes: {
+            type: 'number',
+            default: 0
         }
     },
     computedFields
