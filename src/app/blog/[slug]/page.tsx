@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { Mdx } from "@/components/MDXComponents/mdx";
 import Footer from '@/components/Layout/Footer/Footer'
 import Tags from "@/components/Tags";
+import LikeButton from "@/components/MDXComponents/LikeButton";
 
 export async function generateStaticParams() {
   return allBlogs.map((post) => ({
@@ -29,11 +30,11 @@ export default async function Post({ params }: { params: { slug: string } }) {
           <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
             {post.publishedAt}
           </div>
-          <div className="ml-5 flex flex-inline tracking-tighter">
-            <Tags tags={post.tags || []} /> 
+          <div className="text-xs ml-5 flex flex-inline tracking-tighter">
+            <Tags tags={post.tags || []} />
           </div>
           {post.revisedAt && (
-            <div className="bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
+            <div className="text-xs bg-neutral-100 dark:bg-neutral-800 rounded-md px-2 py-1 tracking-tighter">
               Revised on: {post.revisedAt}
             </div>
           )}
@@ -43,6 +44,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
             <Mdx code={post.body.code} />
           </div>
         </div>
+        <LikeButton initialLikes={post.likes} slug={post.slug} />
       </div>
       <Footer />
     </section>
