@@ -9,6 +9,7 @@ interface Blog {
     publishedAt: string;
     summary: string;
     tags?: string[];
+    likes: number;
 }
 
 interface BlogListProps {
