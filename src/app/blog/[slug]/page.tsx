@@ -5,6 +5,7 @@ import { Mdx } from "@/components/MDXComponents/mdx";
 import Footer from '@/components/Layout/Footer/Footer'
 import Tags from "@/components/Tags";
 import LikeButton from "@/components/MDXComponents/LikeButton";
+import PostClient from "@/components/PostClient"; // Import the new client component
 
 export async function generateStaticParams() {
   return allBlogs.map((post) => ({
@@ -19,6 +20,8 @@ export default async function Post({ params }: { params: { slug: string } }) {
   if (!post) {
     notFound();
   }
+
+
 
   return (
     <section>
@@ -44,7 +47,8 @@ export default async function Post({ params }: { params: { slug: string } }) {
             <Mdx code={post.body.code} />
           </div>
         </div>
-        <LikeButton initialLikes={post.likes} slug={post.slug} />
+
+        <PostClient slug={post.slug} initialLikes={post.likes} />
       </div>
       <Footer />
     </section>
