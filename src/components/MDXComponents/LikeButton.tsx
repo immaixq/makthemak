@@ -32,7 +32,7 @@ const LikeButton: React.FC<LikeButtonProps> = ({ initialLikes, slug }) => {
         if (hasLiked) return;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/posts/${slug}/likes`, {
+            const response = await fetch(`/api/posts/${slug}/likes`, {
                 method: 'POST',
             });
 
