@@ -1,0 +1,113 @@
+---
+title: 'On fancy bear goes phishing'
+publishedAt: '2024-08-16'
+summary: 'Post reading thoughts on fancy bear goes phishing. A book which I pick up randomly in the library and pleasantly surprised by the blissful read.'
+tags: 
+    - thoughts
+---
+## Post Reading Thoughts
+This blog entry is about my thoughts on reading the "fancy bear goes phishing" by Scott J. Shapiro. 
+The book delves into the world of cybersecurity in five influential hacks. This includes the story of 
+Robert Morris Jr, who crashed the internet accidentally in 1980s and the Russian intelligence unit 
+who managed to access the Democratic National Committee's computer system. 
+
+![Fancy bear goes phishing](/fancy-bear-phshing.jpeg)
+
+
+### The style of writing 
+One of the aspects I thoroughly enjoyed about the book is Scott J. Shapiro's unique and engaging writing style.
+While the stories of the hack is intriguing, I really liked how it was conveyed with little sparkles of technical 
+concepts throughout the book. For instance, his explaination of how the internetworking works is memorable as he
+relates to the mailing system in the real world. With the comparision between the real world mailing system versus 
+the digital version - email, it is easier to grasp the meaning of port, segment, and TCP (Transmission Control Protocol). 
+The way he introduces technical concepts in such clarity and elegance is the style of writing I would like to learn from. 
+
+### Technical bits gained 
+Reading "On Fancy Bear Goes Phishing" has helped me understand several technical concepts better. 
+Here are a few key insights,
+
+**What happens when an email is sent?**
+
+When the email `send` button is pressed, the email message is sent to the operating system which runs TCP/IP.
+TCP puts the email in an electronic envelope called `segment` and attach the destionation port onto it. `port` 
+is like a room in the receiver's computer where incoming mail is processed. Port 80 and 443 are typically used 
+for web traffic while port 25 is the standard destination port for email.
+
+When the email message is too big to fit into one envelope, the operating system splits the message into smaller 
+parts sequentially and placed into segment each with its destination port and source address. These segments are 
+sent to another part of the operating system responsible in fitting these TCP segments into a bigger envelope called packets.
+
+Each packet has its own IP address such as 127.3.45.101. Think of IP address like the home address or postal
+code of a computer, that is how the email knows where to go. Finally, the packet is sent to the local network, ready to be
+transferred to a router. The router takes the job of a large post office, in charge of sending the message to its destination 
+with the most optimal route. After transiting across the country, the message reaches the receiver's local network at last.
+The outer IP address on the packet is opened once it has reached the receiver's computer, exposing the inner segment address
+which reads port 25. Knowing that the packet is an email, the email application takes over and handle the rest. 
+
+**Explain CPUs to a child**
+
+CPUs are the brains of the computer who only understand and communicate in binary - ones and zeros. 
+A compiler is needed to translate high level code which humans can read and write, to low level codes (in binary) which a 
+machine can understand. 
+
+**Data versus code**
+
+The computer places information into special memory locations according to their designation. 
+A file designated as code is loaded into the code segment while a file designated as data is loaded
+into data segment. These segments are kept independently. An instruction pointer is used to identify the point of execution when 
+the operating system runs the code. If the intruction pointer point to a data segment, the CPUs will intepret it as 
+code and run execution.
+
+**SQL injection**
+
+Understanding SQL injection requires the understanding of what SQL is. 
+
+> Structured Query Language (SQL): is the main language used for databases search on the web
+
+SQL helps to search through databases from the server for an inputted term and returns information related to the search query. 
+SQL injection happens when the application inserts malicious sql query without proper validation in the user input fields e.g through login forms.
+
+To illustrate a malicious input, our friendly LLMs gives a great example. Consider a user trying login to an application by entering a regular user name 
+and password, the attacker might enter:
+```python
+Username: admin' --
+Password: anything
+```
+
+The combination of these inputs will be processed as:
+```python
+SELECT * FROM users WHERE username = 'admin' -- ' AND password = 'anything';
+```
+where the `--` is a comment in SQL to ignore everything afterwards. As such, the query becomes:
+
+```python
+SELECT * FROM users WHERE username = 'admin';
+```
+If there is a user with the username "admin", the query returns the user's data, bypassing the password check. 
+
+**Authentication**
+
+Authentication is the proof of identify. When we use the computer, the username is prompt in the login page. This is
+the operating system asking who is knocking the door and going into the OS. After the users identify themselves, 
+the users have to provide their credential which serves to prove that the user is indeed who they claim to be.
+
+Multi-Factor Authentication (MFA) enhances security by requiring users to provide two or more distinct verification methods, 
+typically combining something they know (like a password) with something they have (like a phone for receiving a code) 
+or something they are (like a fingerprint), before granting access to an account or system.
+
+### On Moral Duality
+
+There is also a section of the book that talks about moral duality. It emphasizes on the use of any tools are double edged swords.
+These tools can be used for good or evil, and it would be dependent on the intention of the person using the tool.
+
+From nuclear technology to AI, the moral duality of tools has been a subject of ongoing discussion throughtout our time.
+While the development in nuclear engergy potentially provides us an option to clean energy, it is important to consider the consequence of
+nuclear waste disposal and nuclear accidents that pose long term repercussion. While the development in AI enables the next wave of
+growth across most industries like healthcare, it can also perpetuate biases present in the training data and raises concerns about 
+the risk of unexpected problems like the loss of human judgement. 
+
+Ultimately, it is up to us. 
+It is imperative that we develop ethical framworks and regulations to guide its responsible use.
+And for me, I would imagine and hope for a world where the good outweights the bad.
+
+> Full trust in man kind, literally. And happy to contribute even a little to the mission. 
