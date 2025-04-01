@@ -42,7 +42,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
             </div>
           )}
         </div>
-        <div className="">
+        <div className="font-mono">
           <div className="">
             <Mdx code={post.body.code} />
           </div>
