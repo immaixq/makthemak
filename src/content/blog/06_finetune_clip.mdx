@@ -1,0 +1,285 @@
+---
+title: 'Finetune CLIP Image Encoder'
+publishedAt: '2025-03-28'
+summary: 'Documenting the process of finetuning CLIP image encoder using supervised contrastive loss - InfoNCE'
+tags: 
+    - machine learning
+---
+
+## Problem Statement
+The goal of this project is to classify images according to their content. 
+The training data is organized by class, with each directory containing multiple images belonging to that class (potentially showing different views).
+
+```python
+.
+├── cat
+│   ├── 0.jpg
+│   ├── 1.jpg
+│   ├── 2.jpg
+│   └── 3.jpg
+└── dog
+    ├── 0.jpg
+    ├── 1.jpg
+    ├── 2.jpg
+    └── 3.jpg
+```
+
+## Data Preprocessing
+These images have to be converted into embeddings first. These images must first be converted into 
+numerical representations called embeddings. To illustrate the concept, we will initially represent each image as a simple 2-dimensional vector. However, in practice, models like CLIP generate high-dimensional embeddings (e.g., 512 dimensions) that capture richer information.
+In this context, we have two classes which are `cat` and `dog`. 
+After converting the images and normalizing the resulting embedding vectors (typically to unit length), 
+the data might look like this (using our 2D example):
+
+
+| Class | Image   | Raw Embedding (x, y) | Normalized Embedding (x, y) |
+|-------|---------|----------------------|-----------------------------|
+| cat   | 0.jpg   | [1.2, 0.9]           | [0.800, 0.600]              |
+| cat   | 1.jpg   | [0.8, 0.3]           | [0.936, 0.351]              |
+| cat   | 2.jpg   | [1.0, 1.0]           | [0.707, 0.707]              |
+| cat   | 3.jpg   | [1.7, 1.1]           | [0.839, 0.543]              |
+| dog   | 0.jpg   | [-1.0, 1.5]          | [-0.555, 0.832]             |
+| dog   | 1.jpg   | [-0.7, 0.7]          | [-0.707, 0.707]             |
+| dog   | 2.jpg   | [-0.5, 0.2]          | [-0.928, 0.371]             |
+| dog   | 3.jpg   | [-1.3, 0.9]          | [-0.819, 0.567]             |
+
+Notice that the normalized embeddings within the same class (e.g., all 'cat' embeddings) tend to be relatively close to each other, clustering in the same region of the 2D space.
+Normalization is a crucial step, especially since we plan to use contrastive loss for fine-tuning the CLIP image encoder, which often relies on comparing normalized vectors.
+
+## Similarity Metrics
+Next, we calculate the similarity between all pairs of embeddings using the cosine similarity metric. 
+Assuming our normalized embeddings are stored in a tensor features of shape (N, D) (where N is the number of images and D is the embedding dimension), 
+we can compute the pairwise cosine similarity matrix using PyTorch: 
+`similarity_matrix = torch.matmul(features, features.T)` or the equivalent `similarity_matrix = features @ features.T`.
+
+Subsequently, a scaling hyperparameter called temperature is often applied to this similarity matrix, typically by dividing the matrix elements by it. 
+This is common practice when using contrastive loss. 
+
+for images cat/0.jpg, cat/1.jpg, dog/0.jpg, dog/1.jpg, the corresponding labels would be:
+
+```python
+
+labels = torch.tensor([ 0, 0,  1, 1])
+
+```
+where `class 0` is `cat` while `class 1` is `dog`.
+
+The temperature hyperparameter (τ) adjusts the model's sensitivity to the similarity scores. 
+By scaling the scores (e.g., dividing similarity / τ), it modifies how strongly the model differentiates between pairs of embeddings based on their similarity.
+
+**Lower Temperature**:
+- Sharper similarity distribution: The model becomes more confident about its assignments based on similarity scores
+- Amplifies differences between similarity scores: Small differences in high similarity scores lead to larger differences in the resulting probabilities (after softmax)
+- Increases penalty for hard negatives: The model focuses more strongly on separating embeddings that are not in the same class but have relatively high similarity
+
+> This is where it is mind boggling to me.. I will explain this further
+
+**Deciding Factor**:
+- Low temperature (e.g., 0.05, 0.1): Use when you want the model to learn strong separation between classes and create tightly clustered embeddings for items within the same class. 
+Emphasizes discriminating between positives and hard negatives. Can sometimes lead to instability if too low.
+- High temperature (e.g., 0.5, 1.0): Use when you want a softer probability distribution. This treats negative pairs more uniformly, potentially preventing the model from focusing too narrowly on only the hardest negatives early in training. 
+It allows for smoother gradients from a wider range of pairs. 
+Can be useful if the task involves subtle intra-class variations or if low temperature causes training instability.
+
+Looking back at the similarity scores derived from our 2D example embeddings (as calculated in the previous step), 
+we would likely observe high cosine similarity values (potentially > 0.9, depending on the specific pairs) for embeddings within the same class (cat-cat, dog-dog),
+and much lower scores for cross-class pairs (cat-dog). This indicates a good initial separation between the classes in the embedding space, 
+even before fine-tuning.
+
+The diagonal elements of the computed similarity matrix correspond to the similarity of each embedding with itself. 
+Since the embeddings are normalized, these values should theoretically be exactly 1.0 (cosine_similarity(v, v) = 1 for ||v||=1). 
+In practice, due to standard floating-point arithmetic precision limits in computations, the calculated diagonal values might be extremely close but not precisely 1.0 (e.g., 0.999999).
+
+After applying the temperature to the similarity matrix, the matrices look like this, 
+
+```python
+Before Temperature: 
+tensor([[ 1.0000,  0.9594,  0.0552, -0.1414],
+        [ 0.9594,  0.9993, -0.2274, -0.4136],
+        [ 0.0552, -0.2274,  1.0002,  0.9806],
+        [-0.1414, -0.4136,  0.9806,  0.9997]])
+
+After Temperature:
+tensor([[ 1.4286,  1.3706,  0.0789, -0.2020],
+        [ 1.3706,  1.4276, -0.3249, -0.5908],
+        [ 0.0789, -0.3249,  1.4289,  1.4009],
+        [-0.2020, -0.5908,  1.4009,  1.4281]]) 
+
+```
+We can see that by applying a temperature that is less than one e.g 0.7, the original similarity scores 
+are exaggerated and the values move further away from 0. The amplification is even more profound in softmax function as
+`exp(1.428)` is significantly larger relative to `exp(0.0789)` or `exp(-0.2020)` as compared to `exp(1)` with relative to `exp(0.0552)` or `exp(-0.1414)`.
+
+## The Loss Formula 
+Here we are using InfoNCE (Noise-Contrastive Estimation), which is a variant of contrastive loss function commonly used in self supervised learning.
+Given an anchor `i`, this calculates the probability of a positive item `p` that is the correct match relative to all other items `k` based on their scaled similarities.
+
+```python
+
+Loss(i, p) ≈ -log [ exp(sim(i, p)/τ) / Σ_{k≠i} exp(sim(i, k)/τ) ]
+
+# positive similarity against anchor /  all other similarities from non-anchor items
+
+```
+However, if the scaled similarities are large positive numbers, exponentiating these large numbers
+potentially exceed the limits of standard floating point numbers resulting in numberical overflow and breaking
+the calculation. Therefore, we can apply a constant shift to this softmax-like calculation to obtain a more
+stable version before the exponentiation.
+
+```python
+
+logits_max, _ = torch.max(similarity_matrix, dim=1, keepdim=True)
+logits = similarity_matrix - logits_max.detach()
+
+## OUTPUT OF LOGITS
+tensor([[ 0.0000, -0.0406, -0.9448, -1.1414],
+        [-0.0399,  0.0000, -1.2267, -1.4129],
+        [-0.9450, -1.2277,  0.0000, -0.0196],
+        [-1.1411, -1.4133, -0.0191,  0.0000]])
+
+```
+As a result, the largest value in each row of the logits should be 0 and all other values should be less than or equal 
+to 0. 
+
+## Numerator & Denominator Calculation
+The loss function requires the exponentiated logit for the positive pair `exp(logits[i, p])` in the numerator. 
+The denominator is the sum of exponentiated logits for all items k except for the anchor itself (i), `Σ_{k≠i} exp(logits[i, k])`. 
+
+## Mask Generation
+To correctly calculate the InfoNCE loss components, we need two types of masks based on the item labels within the batch:
+
+1. Self-Mask (for Denominator):
+The denominator `Σ_{k≠i} exp(logits[i, k])` requires excluding the term where k=i (an item's similarity with itself). 
+We create a self_mask that is 1 everywhere except for the diagonal, which is 0.
+
+```python
+batch_size = features.shape[0] # Or logits.shape[0]
+device = features.device # Or logits.device
+
+# Creates a mask with 0 on diagonal, 1 elsewhere
+self_mask = torch.ones_like(logits, device=device)
+self_mask.fill_diagonal_(0)
+
+# Alternative using scatter:
+self_mask = torch.scatter(
+    torch.ones_like(logits, device=device),
+    1,
+    torch.arange(batch_size, device=device).view(-1, 1),
+    0
+ ).to(device)
+
+# --  SELF MASK OUTPUT --
+tensor([[0., 1., 1., 1.],
+        [1., 0., 1., 1.],
+        [1., 1., 0., 1.],
+        [1., 1., 1., 0.]])
+
+```
+
+2. Positive Pair Mask (for Loss Calculation):
+To calculate the final loss, we need to identify the positive pairs for each anchor i. 
+These are pairs (i, k) where k is a different item (k ≠ i) but belongs to the same class as i. 
+We leverage the labels tensor for this.
+
+```python
+
+# Assumes 'labels' is a 1D tensor of size [batch_size]
+labels_reshaped = labels.contiguous().view(-1, 1)
+# Create mask where True if labels match (broadcasting [B,1] vs [1,B])
+positive_mask = torch.eq(labels_reshaped, labels_reshaped.T).float().to(device)
+# Exclude self-comparisons (diagonal) from being positive pairs
+positive_mask = mask * self_mask
+
+# -- OUTPUT OF POSITIVE MASK --
+tensor([[1., 1., 0., 0.],
+        [1., 1., 0., 0.],
+        [0., 0., 1., 1.],
+        [0., 0., 1., 1.]])
+
+# alternatively, positive mask can be created with:
+positive_mask = (labels.unsqueeze(0) == labels.unsqueeze(1)).float()
+
+# Exclude self-comparisons (diagonal) from being positive pairs
+positive_mask.fill_diagonal_(0)
+
+# -- FINAL POSITIVE MASK EXCLUDING SELF --
+tensor([[0., 1., 0., 0.],
+        [1., 0., 0., 0.],
+        [0., 0., 0., 1.],
+        [0., 0., 1., 0.]])
+
+```
+
+To get the denominator `exp(logits[i, k])` where `i ≠ k`, a self mask is used to exclude `i=k`.
+
+```python
+
+# Calculate exp(logits[i, k]) for all k != i
+# Note: 'logits' are the scaled and stabilized similarities
+exp_logits_all_non_self = torch.exp(logits) * self_mask
+
+# Calculate Denominator: Sum over k where k != i for each anchor i
+sum_exp_logits_all_non_self = exp_logits_all_non_self.sum(dim=1, keepdim=True)
+
+```
+
+## Log Probability Calculation ( Stable Log-Softmax )
+Instead of calculating the fraction (Numerator / Denominator) and then taking -log, 
+the code uses the more stable `log_prob = logits - log(denominator)`.
+This reduces the risk of intermediate overflow/underflow during the sum and log steps compared to doing it naively. 
+
+```python
+
+# Calculates log [ exp(logits[i,k]) / sum_{j!=i} exp(logits[i,j]) ] for all i, k
+log_prob = logits - torch.log(sum_exp_logits_all_non_self + 1e-12)
+
+```
+
+The `log_prob` is a `[batch_size, batch_size]` tensor that contains log probabilities for every possible pair (i, k).
+It shows how likely the item `k` is considered as the correct match to anchor `i` relative to other items.
+
+## Loss Calculation
+Finally we are ready to put things in the loss function, we will be using the `positive mask` which identifies the
+positive pairs to calculate the loss. 
+
+The loss is the average loss contribution across all positive and all anchors in the batch.
+
+```python
+
+mean_log_prob_positive = (positive_mask * log_prob).sum(1) / (positive_mask.sum(1).clamp(min=1e-12))
+
+# Final loss is the mean over all anchors
+loss = -mean_log_prob_positive.mean()
+
+```
+
+### Examine Positive Pair
+To observe the number of positive pair in each batch, we can log out
+
+```python
+
+positive_mask.sum(1)
+
+# -- NUMBER OF POSITIVE PAIRS E.G --
+NUM POSITIVE PAIRS tensor([1., 1., 1., 1.])
+
+```
+
+For number of positive pairs `[1, 1, 1, 1]` for labels `[0, 0, 1, 1]`,
+this suggests that each sample has exactly 1 other sample with the same label.
+
+For lable `[0, 0, 1, 2]`, the number of positive pairs would be `[1, 1, 0, 0]` as
+class `1` and class `2` has no positive pairs, and class `0` has one other sample of the same class in this batch.
+
+For labels `[0, 1, 2, 3]`, the number of positive pairs would be `[0, 0, 0, 0]` as all classes have only one sample.
+This means there is no learning signal for any sample. 
+
+For my dataset, the average number of images per class is ~ 5, therefore to increase the chance of the presence of positive pairs 
+in a batch, there is a need to increase batch size. 
+
+With average 5 images/class, probability of singletons:
+
+- Batch Size 4: ~40% chance of singleton classes
+- Batch Size 8: ~10% chance
+- Batch Size 16: ~1% chance
+(Based on Poisson distribution approximation)
