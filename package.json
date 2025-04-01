@@ -37,6 +37,7 @@
     "rehype-shiki": "^0.0.9",
     "rehype-slug": "^5.1.0",
     "remark-gfm": "^3.0.1",
+    "remark-math": "^6.0.0",
     "shiki": "^0.14.1",
     "swr": "^2.1.5"
   },
