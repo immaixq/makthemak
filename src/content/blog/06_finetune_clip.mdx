@@ -6,7 +6,7 @@ tags:
     - machine learning
 ---
 
-## Problem Statement
+### Problem Statement
 The goal of this project is to classify images according to their content. 
 The training data is organized by labels, with each directory containing multiple images belonging to its respective class.
 
@@ -25,7 +25,7 @@ A snippet of the structure of `/data` looks like this,
     ├── 2.jpg
     └── 3.jpg
 ```
-## Methodology ☀️
+### Methodology ☀️
 To tackle this image classification, we can leverage contrastive learning.
 
 Contrastive learning is a technique where a model learns to distinguish if images are similar. 
@@ -41,16 +41,16 @@ It is particularly effective in self-supervised learning without labels; however
 
 ![Contrastive Learning](/contrastive-learn.jpeg "contrastive learning from imageGen")_:> contrastive learning impression from imageGen_
 
-## Contrastive Loss Functions Comparison
+### Contrastive Loss Functions Comparison
 There are different variants of loss functions in contrastive learning, each adapted to different optimisation in the embedding space.
 
-| Loss Function | Positives (Closeness) | Negatives (Distance) | Key Features | Use Cases |
-|---|---|---|---|---|
-| **InfoNCE** | 1 Augmented View | All Other Images (Batch) | Temperature Scaling, Softmax | Self-Supervised Learning |
-| **SupCon** | All Images of Same Class | All Other Classes | Multi-Positive, Class-Aware | Supervised Learning |
-| **Triplet Loss** |1 Same Class Image | 1 Different Class Image | Margin-Based Separation | Metric Learning |
+| Loss Function | Positives (Closeness) | Negatives (Distance) | Use Cases |
+|---|---|---|---|
+| **InfoNCE** | 1 Augmented View | All Other Images (Batch) | Self-Supervised Learning |
+| **SupCon** | All Images of Same Class | All Other Classes | Supervised Learning |
+| **Triplet Loss** |1 Same Class Image | 1 Different Class Image | Metric Learning |
 
-## Data Preprocessing ⏳
+### Data Preprocessing ⏳
 For machine to "see" the images, they must first be converted into numerical representations called embeddings. 
 To illustrate the concept, we will initially represent each image as a simple 2-dimensional vector. 
 However, in practice, models like CLIP generate high-dimensional embeddings e.g., 512 dimensions that capture richer information.
@@ -74,7 +74,7 @@ the data looks like this:
 
 Normalization is a crucial step as it helps with training stability by reducing the likelihood of numerical overflow / underflow in loss computation involving exponential function.
 
-## Similarity Metrics 🍃
+### Similarity Metrics 🍃
 Next, we calculate the similarity between all pairs of embeddings using the cosine similarity metric. 
 Assuming our normalized embeddings are stored in a tensor features of shape (N, D) (where N is the number of images and D is the embedding dimension), 
 we can compute the pairwise cosine similarity matrix using PyTorch: 
@@ -144,7 +144,7 @@ We can see that by applying a temperature that is less than one e.g 0.7, the ori
 are exaggerated and the values move further away from 0. The amplification is even more profound in softmax function as
 `exp(1.428)` is significantly larger relative to `exp(0.0789)` or `exp(-0.2020)` as compared to `exp(1)` with relative to `exp(0.0552)` or `exp(-0.1414)`.
 
-## The Loss Formula 🌾
+### The Loss Formula 🌾
 Here we are using supervised contrastive (SupCon) loss, 
 
 $$ \mathcal{L}_{\text{sup}} = - \sum_{i \in I} \frac{1}{|P(i)|} \sum_{p \in P(i)} \log \left( \frac{\exp(\mathbf{z}_i \cdot \mathbf{z}_p / \tau)}{\sum_{a \in A(i)} \exp(\mathbf{z}_i \cdot \mathbf{z}_a / \tau)} \right)$$ 
@@ -164,7 +164,7 @@ The fraction $① / ②$
 is the correct match for anchor sample `i`, given the similarities of `i` to all available candidates `a`.
 - The loss function encourages the model to make this fraction to approach 1 for every positive `p`
 
-### Thinking further about the loss.. 💭
+#### Thinking further about the loss.. 💭
 That means, similar images should have a higher numerator where the cosine similarity should be 
 closer to 1. The fraction $① / ②$ therefore is larger for positive pair and together with $$- log [ ① / ② ]$$,
 the loss becomes a smaller value closer to 0. 
@@ -191,7 +191,7 @@ tensor([[ 0.0000, -0.0406, -0.9448, -1.1414],
 As a result, the largest value in each row of the logits should be 0 and all other values should be less than or equal 
 to 0. 
 
-## Numerator & Denominator Calculation
+### Numerator & Denominator Calculation
 The core calculation within the Supervised Contrastive loss involves a fraction resembling a Softmax function. 
 For a given anchor item `i` and a positive item `p` (where `label[i] == label[p]`), the term inside the logarithm is:
 
@@ -200,7 +200,7 @@ Denominator: $$Σ_{k≠i} exp(logits[i, k])$$
 
 Here, $$logits[i, k]$$ represents the scaled similarity $$z_i · z_k / τ$$.
 
-## Mask Generation 🎭
+### Mask Generation 🎭
 To correctly calculate the Supervised Contrastive loss components using matrix operations on the full `logits` matrix, we typically need two masks based on item indices and labels within the batch:
 
 **1. Self-Mask (Exclusion Mask for Denominator):**
@@ -295,7 +295,7 @@ sum_exp_logits_all_non_self = exp_logits_all_non_self.sum(dim=1, keepdim=True)
 
 ```
 
-## Log Probability Calculation
+### Log Probability Calculation
 Instead of calculating the fraction (Numerator / Denominator) and then taking -log, 
 the code uses the more stable `log_prob = logits - log(denominator)`.
 This reduces the risk of intermediate overflow/underflow during the sum and log steps compared to doing it naively. 
@@ -310,7 +310,7 @@ log_prob = logits - torch.log(sum_exp_logits_all_non_self + 1e-12)
 The `log_prob` is a `[batch_size, batch_size]` tensor that contains log probabilities for every possible pair (i, k).
 It shows how likely the item `k` is considered as the correct match to anchor `i` relative to other items.
 
-## Loss Calculation
+### Loss Calculation
 Finally we are ready to put things in the loss function, we will be using the `positive mask` which identifies the
 positive pairs to calculate the loss. 
 
@@ -329,7 +329,7 @@ loss = -mean_log_prob_positive.mean()
 
 ```
 
-### Examine Positive Pair
+#### Examine Positive Pair
 To observe the number of positive pair in each batch, we can log out
 
 ```python
@@ -363,7 +363,7 @@ With average 5 images/class, probability of singletons:
 - Batch Size 16: ~1% chance
 (Based on Poisson distribution approximation)
 
-## Time to Finetune 🔆
+### Time to Finetune 🔆
 
 The image encoder in CLIP follows the vision transformer architecture (ViT).
 The transformer encoder core consists of stacked transformer blocks which are
@@ -441,7 +441,7 @@ def unfreeze_visual_encoder_layers(visual_model:  nn.Module, unfreeze_last_n_blo
 
 ```
 
-## Training Setup
+### Training Setup
 
 **Optimizer Configuration**
 We will be using `AdamW` as the optimizer algorithm, initialising it to handle only the 
@@ -475,7 +475,7 @@ loss = supervised_contrastive_loss(embeddings, labels, temperature)
 
 With the optimizer, data pipeline, and loss function ready, the next step is the core training process.
 
-## Training Loop
+### Training Loop
 With the optimizer, data loaders, and loss function prepared, the core fine-tuning process involves iterating through the dataset over multiple epochs. 
 Each epoch processes the entire training dataset in batches.
 
@@ -518,18 +518,18 @@ for epoch in range(num_epochs):
         
 ```
 
-## Evaluation Metrics
+### Evaluation Metrics
 Now that we have our weights, how do we assess the quality of embeddings learned during the finetuning process?
 
 Since the model ends with the projector, it does not inherently include a classification head trained during 
 the contrastive phase, thus classification accuracy cannot be derived directly. Alternate evaluation include using 
 k-NN classification or linear probing to examine the quality of the learned embedding space. 
 
-### k-NN Classification 
+#### k-NN Classification 
 This metric evaluates the clustering quality of the embedding space. Embeddings of images from the same class 
 should be nearer to one another after finetuning.
 
-### Linear Probing Accuracy
+#### Linear Probing Accuracy
 The linear probing accuracy assesses the performance of the learned features applied for downstream tasks.
 It measures the linear separability of the classes in the embedding space. 
 
@@ -537,7 +537,7 @@ These metrics are calculated at the end of each epoch or every few epochs to pro
 
 
 
-## References
+### References
 - [Supervised Contrastive Learning](https://arxiv.org/pdf/2004.11362)
 - [ViT](https://arxiv.org/abs/2010.11929)
 - [Github Repository Link](https://github.com/immaixq/ai-playground.git)
