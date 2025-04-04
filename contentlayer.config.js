@@ -3,6 +3,8 @@ import remarkGfm from 'remark-gfm';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeKatex from 'rehype-katex'
+import remarkMath from 'remark-math'
 
 const computedFields = {
   slug: {
@@ -49,8 +51,9 @@ export default makeSource({
   contentDirPath: 'src/content',
   documentTypes: [Blog],
   mdx: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
+      rehypeKatex,
       rehypeSlug,
       [
         rehypePrettyCode,

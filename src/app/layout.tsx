@@ -28,21 +28,23 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-
+    
     <html lang="en"
       className={clsx(
         "text-neutral-700 bg-slate-100 dark:text-slate-400 dark:bg-[#111010]",
         roboto.variable
       )}
     >
-      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-merriweather">
+      <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-mono">
         <section className='layout'>
           <Nav />
           <main className="mt-12">
             {children}
           </main>
         </section>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"/>
       </body>
     </html>
+    
   )
 }
