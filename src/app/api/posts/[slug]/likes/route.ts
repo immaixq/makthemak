@@ -60,7 +60,8 @@ export async function GET(request: NextRequest, { params }: { params: { slug: st
         );
     } catch (error) {
         console.error('GET /api/posts/[slug]/likes error:', error);
-        logSecurityEvent('API error in likes GET', { slug: params.slug, error: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logSecurityEvent('API error in likes GET', { slug: params.slug, error: errorMessage });
         
         return NextResponse.json(
             { error: 'Internal server error' },
@@ -148,7 +149,8 @@ export async function POST(request: NextRequest, { params }: { params: { slug: s
 
     } catch (error) {
         console.error('POST /api/posts/[slug]/likes error:', error);
-        logSecurityEvent('API error in likes POST', { slug: params.slug, error: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logSecurityEvent('API error in likes POST', { slug: params.slug, error: errorMessage });
 
         return NextResponse.json(
             { error: 'Internal server error' },
