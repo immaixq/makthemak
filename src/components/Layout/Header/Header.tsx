@@ -32,7 +32,7 @@ const Header = () => {
 
   return (
     <nav className="font-serif font-bold">
-      <div className="flex justify-between ">
+      <div className="flex justify-between">
         <div>
           <a href='/'>
             <Logo/>
