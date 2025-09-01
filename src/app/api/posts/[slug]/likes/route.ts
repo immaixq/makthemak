@@ -1,10 +1,55 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
-import { validateSlug, getClientIP, hashIP, securityHeaders, logSecurityEvent } from '@/lib/security';
+import crypto from 'crypto';
+
+// Security headers
+const securityHeaders = {
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+};
 
 // Rate limiting map (in production, use Redis)
 const ipLikeCounts = new Map<string, { count: number; resetTime: number }>();
+
+function getClientIP(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIp = request.headers.get('x-real-ip');
+  
+  if (forwarded) {
+    return forwarded.split(',')[0].trim();
+  }
+  if (realIp) {
+    return realIp.trim();
+  }
+  return 'unknown';
+}
+
+function hashIP(ip: string): string {
+  return crypto.createHash('sha256').update(ip + 'salt').digest('hex');
+}
+
+function validateSlug(slug: string): { isValid: boolean; error?: string } {
+  if (!slug || typeof slug !== 'string') {
+    return { isValid: false, error: 'Invalid slug format' };
+  }
+  
+  if (slug.length > 100) {
+    return { isValid: false, error: 'Slug too long' };
+  }
+  
+  const slugPattern = /^[a-zA-Z0-9-_]+$/;
+  if (!slugPattern.test(slug)) {
+    return { isValid: false, error: 'Invalid slug characters' };
+  }
+  
+  return { isValid: true };
+}
+
+function logSecurityEvent(message: string, data: any) {
+  console.warn(`[SECURITY] ${message}:`, data);
+}
 
 function checkLikeRateLimit(ipHash: string): { allowed: boolean; resetTime?: number } {
   const now = Date.now();

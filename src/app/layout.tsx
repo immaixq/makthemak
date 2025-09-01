@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
 import clsx from 'clsx';
 import Nav from '@/components/Layout/Header/Header'
-import ErrorBoundary from '@/components/ErrorBoundary'
 
 import { Roboto } from 'next/font/google';
 import type { Metadata } from 'next';
@@ -70,14 +69,12 @@ export default function RootLayout({
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"/>
       </head>
       <body className="max-w-3xl mx-4 mt-8 md:mt-20 lg:mt-32 lg:mx-auto font-mono">
-        <ErrorBoundary>
-          <section className='layout'>
-            <Nav />
-            <main className="mt-12">
-              {children}
-            </main>
-          </section>
-        </ErrorBoundary>
+        <section className='layout'>
+          <Nav />
+          <main className="mt-12">
+            {children}
+          </main>
+        </section>
       </body>
     </html>
     
